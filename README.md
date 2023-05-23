@@ -1,0 +1,2 @@
+# automated_test_stm32
+基于STM32F407的自动化测试工具
