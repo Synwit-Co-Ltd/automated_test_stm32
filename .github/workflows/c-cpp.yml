@@ -16,10 +16,8 @@ jobs:
     - name: make
       run: |
         sudo apt install gcc-arm-none-eabi
-        dirs=$(find -name 'automated_test*' -type d)
-        for item in $dirs
-        do
-          make clean -C $item
-          make -C $item
-          make clean -C $item
-        done
+        cd ./code/automated_test
+        make clean
+        make
+        make clean
+
