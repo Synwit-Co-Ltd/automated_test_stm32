@@ -1,0 +1,87 @@
+# Project information
+site_name: SYNWIT芯片自动化测试
+site_url: https://Synwit-Co-Ltd.github.io/automated_test_stm32/
+site_author: synwit
+site_description: >-
+  SYNWIT芯片自动化测试
+
+# Repository
+repo_name: Synwit-Co-Ltd/automated_test_stm32
+repo_url: https://github.com/Synwit-Co-Ltd/automated_test_stm32
+edit_uri: edit/main/docs/
+
+# Configuration
+theme:
+  name: material
+  palette: 
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate 
+      primary: light blue
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: cyan
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  language: zh
+  logo: images/logo.png
+  favicon: images/logo.png
+  features:
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - content.action.edit
+    - content.action.view
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil 
+    view: material/eye
+
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Synwit-Co-Ltd
+      name: synwit on github
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Page tree
+nav:
+  - 前言: 'index.md'
+  
