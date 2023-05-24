@@ -85,3 +85,11 @@ markdown_extensions:
 nav:
   - 前言: 'index.md'
   - 提交代码和更新文档: 'basic/提交代码和更新文档.md'
+  - STM32F407ZGT6:
+    - 硬件介绍: 'stm32/硬件介绍.md'
+    - STM32CubeMX配置: 'stm32/STM32CubeMX配置.md'
+  - SCPI:
+    - scpi_parser移植: 'scpi_parser移植.md'
+  - 上位机:
+    - ni_max配置: 'ni_max配置.md'
+    - pyvisa配置: 'pyvisa配置.md'
