@@ -25,7 +25,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "scpi/scpi.h"
+#include "scpi-def.h"
+#include "tusb.h"
+#include "usbtmc_app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,6 +95,14 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+  SCPI_Init(&scpi_context,
+    scpi_commands,
+    &scpi_interface,
+    scpi_units_def,
+    SCPI_IDN1, SCPI_IDN2, SCPI_IDN3, SCPI_IDN4,
+    scpi_input_buffer, SCPI_INPUT_BUFFER_LENGTH,
+    scpi_error_queue_data, SCPI_ERROR_QUEUE_SIZE);
+  tud_init(BOARD_TUD_RHPORT);
 
   /* USER CODE END 2 */
 
@@ -102,6 +113,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    tud_task(); // tinyusb device task
+    usbtmc_app_task_iter();
   }
   /* USER CODE END 3 */
 }

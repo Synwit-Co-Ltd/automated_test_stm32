@@ -16,7 +16,7 @@ jobs:
     - name: make
       run: |
         sudo apt install gcc-arm-none-eabi
-        cd ./code/automated_test
+        cd ./code/automated_test/gcc
         make clean
         make
         make clean
