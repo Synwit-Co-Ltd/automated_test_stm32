@@ -91,5 +91,5 @@ nav:
   - SCPI:
     - scpi_parser移植: 'scpi/scpi_parser移植.md'
   - 上位机:
-    - ni_max配置: 'pc/ni_max配置.md'
+    - ni-visa配置: 'pc/ni-visa配置.md'
     - pyvisa配置: 'pc/pyvisa配置.md'
