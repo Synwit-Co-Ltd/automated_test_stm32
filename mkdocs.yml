@@ -90,6 +90,7 @@ nav:
     - STM32CubeMX配置: 'stm32/STM32CubeMX配置.md'
   - SCPI:
     - scpi_parser移植: 'scpi/scpi_parser移植.md'
+    - scpi标准: 'scpi/scpi标准.md'
   - 上位机:
     - ni-visa配置: 'pc/ni-visa配置.md'
     - pyvisa配置: 'pc/pyvisa配置.md'
