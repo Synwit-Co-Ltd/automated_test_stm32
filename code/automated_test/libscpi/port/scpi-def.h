@@ -53,9 +53,6 @@ scpi_result_t SCPI_Control(scpi_t * context, scpi_ctrl_name_t ctrl, scpi_reg_val
 scpi_result_t SCPI_Reset(scpi_t * context);
 scpi_result_t SCPI_Flush(scpi_t * context);
 
-
-scpi_result_t SCPI_SystemCommTcpipControlQ(scpi_t * context);
-
 #ifdef __cplusplus
 }
 #endif

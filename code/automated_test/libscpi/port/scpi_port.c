@@ -36,16 +36,16 @@
 extern size_t usb_buffer_len;
 extern char usb_buffer[225];
 
-//#define SCPI_USE_SERIAL
+// #define SCPI_USE_SERIAL
 #define SCPI_USE_USBTMC
 
 size_t SCPI_Write(scpi_t *context, const char *data, size_t len)
 {
     (void)context;
 #ifdef SCPI_USE_SERIAL
-    for(uint32_t i = 0; i < len; i++)
+    for (uint32_t i = 0; i < len; i++)
     {
-     printf("%c",data[i]);
+        printf("%c", data[i]);
     }
 #endif
 #ifdef SCPI_USE_USBTMC
@@ -71,25 +71,32 @@ scpi_result_t SCPI_Flush(scpi_t *context)
 int SCPI_Error(scpi_t *context, int_fast16_t err)
 {
     (void)context;
+    if (err != 0)
+    {
 #ifdef SCPI_USE_SERIAL
-    printf("**ERROR: %d, \"%s\"\r\n", (int16_t) err, SCPI_ErrorTranslate(err));
+        printf("**ERROR: %d, \"%s\"\r\n", (int16_t)err, SCPI_ErrorTranslate(err));
 #endif
 #ifdef SCPI_USE_USBTMC
-    char _err[64];
-    uint8_t _err_len = 0;
-    memset(_err, 0, sizeof(_err));
-    sprintf(_err, "**ERROR: %d, \"%s\"\r\n", (int16_t)err, SCPI_ErrorTranslate(err));
-    _err_len = strlen(_err);
-    if (_err_len + usb_buffer_len < sizeof(usb_buffer))
-    {
-        memcpy(&(usb_buffer[usb_buffer_len]), _err, _err_len);
-        usb_buffer_len += _err_len;
+        char _err[64];
+        uint8_t _err_len = 0;
+        memset(_err, 0, sizeof(_err));
+        sprintf(_err, "**ERROR: %d, \"%s\"\r\n", (int16_t)err, SCPI_ErrorTranslate(err));
+        _err_len = strlen(_err);
+        if (_err_len + usb_buffer_len < sizeof(usb_buffer))
+        {
+            memcpy(&(usb_buffer[usb_buffer_len]), _err, _err_len);
+            usb_buffer_len += _err_len;
+        }
+        else
+        {
+            return SCPI_RES_ERR; // buffer overflow!
+        }
+#endif
     }
     else
     {
-        return SCPI_RES_ERR; // buffer overflow!
+        /* No more errors in the queue */
     }
-#endif
     return SCPI_RES_OK;
 }
 
@@ -97,9 +104,12 @@ scpi_result_t SCPI_Control(scpi_t *context, scpi_ctrl_name_t ctrl, scpi_reg_val_
 {
     (void)context;
 #ifdef SCPI_USE_SERIAL
-    if (SCPI_CTRL_SRQ == ctrl) {
+    if (SCPI_CTRL_SRQ == ctrl)
+    {
         printf("**SRQ: 0x%X (%d)\r\n", val, val);
-    } else {
+    }
+    else
+    {
         printf("**CTRL %02x: 0x%X (%d)\r\n", ctrl, val, val);
     }
 #endif
@@ -152,13 +162,6 @@ scpi_result_t SCPI_Reset(scpi_t *context)
     }
 #endif
     return SCPI_RES_OK;
-}
-
-scpi_result_t SCPI_SystemCommTcpipControlQ(scpi_t *context)
-{
-    (void)context;
-
-    return SCPI_RES_ERR;
 }
 
 /* END OF LICENSE */

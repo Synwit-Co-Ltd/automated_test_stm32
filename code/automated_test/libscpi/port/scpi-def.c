@@ -41,68 +41,9 @@
 #include "scpi/scpi.h"
 #include "scpi-def.h"
 
-static scpi_result_t DMM_MeasureVoltageDcQ(scpi_t *context)
-{
-    scpi_number_t param1, param2;
-    char bf[15];
-    // fprintf(stderr, "meas:volt:dc\r\n"); /* debug command name */
-
-    /* read first parameter if present */
-    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param1, FALSE))
-    {
-        /* do something, if parameter not present */
-    }
-
-    /* read second paraeter if present */
-    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param2, FALSE))
-    {
-        /* do something, if parameter not present */
-    }
-
-    SCPI_NumberToStr(context, scpi_special_numbers_def, &param1, bf, 15);
-    // fprintf(stderr, "\tP1=%s\r\n", bf);
-
-    SCPI_NumberToStr(context, scpi_special_numbers_def, &param2, bf, 15);
-    // fprintf(stderr, "\tP2=%s\r\n", bf);
-
-    SCPI_ResultDouble(context, 0);
-
-    return SCPI_RES_OK;
-}
-
-static scpi_result_t DMM_MeasureVoltageAcQ(scpi_t *context)
-{
-    scpi_number_t param1, param2;
-    char bf[15];
-    // fprintf(stderr, "meas:volt:ac\r\n"); /* debug command name */
-
-    /* read first parameter if present */
-    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param1, FALSE))
-    {
-        /* do something, if parameter not present */
-    }
-
-    /* read second paraeter if present */
-    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param2, FALSE))
-    {
-        /* do something, if parameter not present */
-    }
-
-    SCPI_NumberToStr(context, scpi_special_numbers_def, &param1, bf, 15);
-    // fprintf(stderr, "\tP1=%s\r\n", bf);
-
-    SCPI_NumberToStr(context, scpi_special_numbers_def, &param2, bf, 15);
-    // fprintf(stderr, "\tP2=%s\r\n", bf);
-
-    SCPI_ResultDouble(context, 0);
-
-    return SCPI_RES_OK;
-}
-
 static scpi_result_t DMM_ConfigureVoltageDc(scpi_t *context)
 {
     double param1, param2;
-    // fprintf(stderr, "conf:volt:dc\r\n"); /* debug command name */
 
     /* read first parameter if present */
     if (!SCPI_ParamDouble(context, &param1, TRUE))
@@ -116,8 +57,36 @@ static scpi_result_t DMM_ConfigureVoltageDc(scpi_t *context)
         /* do something, if parameter not present */
     }
 
-    // fprintf(stderr, "\tP1=%lf\r\n", param1);
-    // fprintf(stderr, "\tP2=%lf\r\n", param2);
+    SCPI_ResultDouble(context,param1);
+    SCPI_ResultDouble(context,param2);
+    SCPI_ResultDouble(context,0);
+
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t DMM_MeasureVoltageDcQ(scpi_t *context)
+{
+    scpi_number_t param1, param2;
+    char bf[15];
+    /* read first parameter if present */
+    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param1, FALSE))
+    {
+        /* do something, if parameter not present */
+    }
+
+    /* read second paraeter if present */
+    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param2, FALSE))
+    {
+        /* do something, if parameter not present */
+    }
+
+    SCPI_NumberToStr(context, scpi_special_numbers_def, &param1, bf, 15);
+    SCPI_ResultText(context, bf);
+
+    SCPI_NumberToStr(context, scpi_special_numbers_def, &param2, bf, 15);
+    SCPI_ResultText(context, bf);
+
+    SCPI_ResultDouble(context, 0);
 
     return SCPI_RES_OK;
 }
@@ -125,7 +94,6 @@ static scpi_result_t DMM_ConfigureVoltageDc(scpi_t *context)
 static scpi_result_t TEST_Bool(scpi_t *context)
 {
     scpi_bool_t param1;
-    // fprintf(stderr, "TEST:BOOL\r\n"); /* debug command name */
 
     /* read first parameter if present */
     if (!SCPI_ParamBool(context, &param1, TRUE))
@@ -133,7 +101,7 @@ static scpi_result_t TEST_Bool(scpi_t *context)
         return SCPI_RES_ERR;
     }
 
-    // fprintf(stderr, "\tP1=%d\r\n", param1);
+    SCPI_ResultBool(context, param1);
 
     return SCPI_RES_OK;
 }
@@ -157,8 +125,7 @@ static scpi_result_t TEST_ChoiceQ(scpi_t *context)
     }
 
     SCPI_ChoiceToName(trigger_source, param, &name);
-    // fprintf(stderr, "\tP1=%s (%ld)\r\n", name, (long int)param);
-
+    
     SCPI_ResultInt32(context, param);
 
     return SCPI_RES_OK;
@@ -170,7 +137,8 @@ static scpi_result_t TEST_Numbers(scpi_t *context)
 
     SCPI_CommandNumbers(context, numbers, 2, 1);
 
-    // fprintf(stderr, "TEST numbers %d %d\r\n", numbers[0], numbers[1]);
+    SCPI_ResultInt32(context,numbers[0]);
+    SCPI_ResultInt32(context,numbers[1]);
 
     return SCPI_RES_OK;
 }
@@ -185,7 +153,7 @@ static scpi_result_t TEST_Text(scpi_t *context)
         buffer[0] = '\0';
     }
 
-    // fprintf(stderr, "TEXT: ***%s***\r\n", buffer);
+    SCPI_ResultText(context, buffer);
 
     return SCPI_RES_OK;
 }
@@ -371,29 +339,15 @@ static scpi_result_t TEST_Chanlst(scpi_t *context)
 
     {
         size_t i;
-        fprintf(stderr, "TEST_Chanlst: ");
+        SCPI_ResultText(context,"TEST_Chanlst: ");
         for (i = 0; i < arr_idx; i++)
         {
-            fprintf(stderr, "%d!%d, ", array[i].row, array[i].col);
+            SCPI_ResultInt32(context,array[i].row);
+            SCPI_ResultInt32(context,array[i].col);
+            SCPI_ResultText(context,";");
         }
-        fprintf(stderr, "\r\n");
+        SCPI_ResultText(context,"\r\n");
     }
-    return SCPI_RES_OK;
-}
-
-/**
- * Reimplement IEEE488.2 *TST?
- *
- * Result should be 0 if everything is ok
- * Result should be 1 if something goes wrong
- *
- * Return SCPI_RES_OK
- */
-static scpi_result_t My_CoreTstQ(scpi_t *context)
-{
-
-    SCPI_ResultInt32(context, 0);
-
     return SCPI_RES_OK;
 }
 
@@ -445,7 +399,7 @@ const scpi_command_t scpi_commands[] = {
     },
     {
         .pattern = "*TST?",
-        .callback = My_CoreTstQ,
+        .callback = SCPI_CoreTstQ,
     },
     {
         .pattern = "*WAI",
@@ -465,10 +419,17 @@ const scpi_command_t scpi_commands[] = {
         .pattern = "SYSTem:VERSion?",
         .callback = SCPI_SystemVersionQ,
     },
+    /* {.pattern = "STATus:OPERation?", .callback = scpi_stub_callback,}, */
+    /* {.pattern = "STATus:OPERation:EVENt?", .callback = scpi_stub_callback,}, */
+    /* {.pattern = "STATus:OPERation:CONDition?", .callback = scpi_stub_callback,}, */
+    /* {.pattern = "STATus:OPERation:ENABle", .callback = scpi_stub_callback,}, */
+    /* {.pattern = "STATus:OPERation:ENABle?", .callback = scpi_stub_callback,}, */
+
     {
         .pattern = "STATus:QUEStionable[:EVENt]?",
         .callback = SCPI_StatusQuestionableEventQ,
     },
+    /* {.pattern = "STATus:QUEStionable:CONDition?", .callback = scpi_stub_callback,}, */
     {
         .pattern = "STATus:QUEStionable:ENABle",
         .callback = SCPI_StatusQuestionableEnable,
@@ -477,7 +438,6 @@ const scpi_command_t scpi_commands[] = {
         .pattern = "STATus:QUEStionable:ENABle?",
         .callback = SCPI_StatusQuestionableEnableQ,
     },
-
     {
         .pattern = "STATus:PRESet",
         .callback = SCPI_StatusPreset,
@@ -485,51 +445,19 @@ const scpi_command_t scpi_commands[] = {
 
     /* DMM */
     {
-        .pattern = "MEASure:VOLTage:DC?",
-        .callback = DMM_MeasureVoltageDcQ,
-    },
-    {
         .pattern = "CONFigure:VOLTage:DC",
         .callback = DMM_ConfigureVoltageDc,
+    },
+    {
+        .pattern = "MEASure:VOLTage:DC?",
+        .callback = DMM_MeasureVoltageDcQ,
     },
     {
         .pattern = "MEASure:VOLTage:DC:RATio?",
         .callback = SCPI_StubQ,
     },
-    {
-        .pattern = "MEASure:VOLTage:AC?",
-        .callback = DMM_MeasureVoltageAcQ,
-    },
-    {
-        .pattern = "MEASure:CURRent:DC?",
-        .callback = SCPI_StubQ,
-    },
-    {
-        .pattern = "MEASure:CURRent:AC?",
-        .callback = SCPI_StubQ,
-    },
-    {
-        .pattern = "MEASure:RESistance?",
-        .callback = SCPI_StubQ,
-    },
-    {
-        .pattern = "MEASure:FRESistance?",
-        .callback = SCPI_StubQ,
-    },
-    {
-        .pattern = "MEASure:FREQuency?",
-        .callback = SCPI_StubQ,
-    },
-    {
-        .pattern = "MEASure:PERiod?",
-        .callback = SCPI_StubQ,
-    },
 
-    {
-        .pattern = "SYSTem:COMMunication:TCPIP:CONTROL?",
-        .callback = SCPI_SystemCommTcpipControlQ,
-    },
-
+    /* TEST */
     {
         .pattern = "TEST:BOOL",
         .callback = TEST_Bool,
